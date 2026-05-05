@@ -1,35 +1,23 @@
 const express = require("express");
-
 const router = express.Router();
+const {
+  createContact,
+  getAllContacts,
+  getContactById,
+  updateContactStatus,
+  deleteContact,
+  getContactStats
+} = require("../controllers/contactController");
+const { adminAuth } = require("../middleware/auth");
 
-const Contact = require("../models/ContactModel"); // correct path
+// Public route
+router.post("/", createContact);
 
-
-router.post("/",async(req,res)=>{
-
-try{
-
-const newContact = new Contact(req.body);
-
-await newContact.save();
-
-res.json({
-
-message:"Saved successfully"
-
-});
-
-}catch(err){
-
-res.status(500).json({
-
-error:"Server error"
-
-});
-
-}
-
-});
-
+// Admin routes (protected)
+router.get("/", adminAuth, getAllContacts);
+router.get("/stats", adminAuth, getContactStats);
+router.get("/:id", adminAuth, getContactById);
+router.patch("/:id/status", adminAuth, updateContactStatus);
+router.delete("/:id", adminAuth, deleteContact);
 
 module.exports = router;
