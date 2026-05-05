@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+///////
 // Database connection - FIXED: Remove deprecated options
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB Connected"))
